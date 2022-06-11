@@ -1,6 +1,5 @@
 package com.senshop.backend.model;
 
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -35,7 +34,7 @@ public class Account {
     }
 
     public Account() {
-        
+
     }
 
     public String get_id() {

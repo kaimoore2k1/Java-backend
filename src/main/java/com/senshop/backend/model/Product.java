@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document(collection = "products")
 public class Product {
     @Id
@@ -21,7 +20,7 @@ public class Product {
     private ArrayList<String> categories;
     private String slugName;
     private String content;
-    
+
     public Product() {
     }
 
@@ -136,5 +135,5 @@ public class Product {
     public void setContent(String content) {
         this.content = content;
     }
-    
+
 }
