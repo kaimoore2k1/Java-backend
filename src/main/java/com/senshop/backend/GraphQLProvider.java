@@ -1,6 +1,5 @@
 package com.senshop.backend;
 
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
@@ -46,9 +45,11 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
-                        .dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
-                .type(newTypeWiring("Book")
-                        .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
+                        .dataFetcher("getAccountByName", graphQLDataFetchers.getAccountDataFetcher()))
+                .type(newTypeWiring("Query")
+                        .dataFetcher("accounts", graphQLDataFetchers.getAllAccounts()))
+                .type(newTypeWiring("Query")
+                        .dataFetcher("getAllProductsByCategory", graphQLDataFetchers.getAllProductsByCategory()))
                 .build();
     }
 
