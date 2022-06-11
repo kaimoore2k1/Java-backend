@@ -37,12 +37,11 @@ public class GraphQLDataFetchers {
                 };
         }
 
-        public DataFetcher getAllProductsByCategory() {
-                System.out.print("============================================================");
-                System.out.println(productRepository.findByCategory("chocanh"));
+        public DataFetcher getAllProducts() {
+                System.out.println("============================================================");
+                System.out.println(productRepository.findAllProducts());
                 return dataFetchingEnvironment -> {
-                        List<Product> acc = productRepository.findByCategory("chocanh");
-                        return acc;
+                        return productRepository.findAllProducts();
                 };
         }
 }

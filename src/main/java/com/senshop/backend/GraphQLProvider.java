@@ -49,7 +49,7 @@ public class GraphQLProvider {
                 .type(newTypeWiring("Query")
                         .dataFetcher("accounts", graphQLDataFetchers.getAllAccounts()))
                 .type(newTypeWiring("Query")
-                        .dataFetcher("getAllProductsByCategory", graphQLDataFetchers.getAllProductsByCategory()))
+                        .dataFetcher("getAllProducts", graphQLDataFetchers.getAllProducts()))
                 .build();
     }
 
