@@ -22,5 +22,3 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/vendor/");
     }
 }
-
-

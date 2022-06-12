@@ -1,4 +1,4 @@
-package com.senshop.backend;
+package com.senshop.backend.config;
 import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
