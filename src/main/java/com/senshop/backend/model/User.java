@@ -1,6 +1,6 @@
 package com.senshop.backend.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,14 +19,31 @@ public class User {
     private String sex;
     private String birthday;
     private String email;
-    private ArrayList<ProductsBooked> productsBooked;
+    private List<ProductsBooked> productsBooked;
     private String dateCreate;
     private String avatarUrl;
 
-    public User(String _id, String username, String firstName, String lastName, String country, String address,
-            String city, String numberPhone, String sex, String birthday, String email,
-            ArrayList<ProductsBooked> productsBooked, String dateCreate, String avatarUrl) {
-        this._id = _id;
+    // public User(String _id, String username, String firstName, String lastName, String country, String address,
+    //         String city, String numberPhone, String sex, String birthday, String email,
+    //         ArrayList<ProductsBooked> productsBooked, String dateCreate, String avatarUrl) {
+    //     this._id = _id;
+    //     this.username = username;
+    //     this.firstName = firstName;
+    //     this.lastName = lastName;
+    //     this.country = country;
+    //     this.address = address;
+    //     this.city = city;
+    //     this.numberPhone = numberPhone;
+    //     this.sex = sex;
+    //     this.birthday = birthday;
+    //     this.email = email;
+    //     this.productsBooked = productsBooked;
+    //     this.dateCreate = dateCreate;
+    //     this.avatarUrl = avatarUrl;
+    // }
+
+    public User(String username, String firstName, String lastName, String country, String address,
+    String city, String numberPhone, String email, String dateCreate, String avatarUrl) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,15 +51,9 @@ public class User {
         this.address = address;
         this.city = city;
         this.numberPhone = numberPhone;
-        this.sex = sex;
-        this.birthday = birthday;
         this.email = email;
-        this.productsBooked = productsBooked;
         this.dateCreate = dateCreate;
         this.avatarUrl = avatarUrl;
-    }
-
-    public User() {
     }
 
     public String get_id() {
@@ -89,7 +100,7 @@ public class User {
         return email;
     }
 
-    public ArrayList<ProductsBooked> getProductsBooked() {
+    public List<ProductsBooked> getProductsBooked() {
         return productsBooked;
     }
 
@@ -145,7 +156,7 @@ public class User {
         this.email = email;
     }
 
-    public void setProductsBooked(ArrayList<ProductsBooked> productsBooked) {
+    public void setProductsBooked(List<ProductsBooked> productsBooked) {
         this.productsBooked = productsBooked;
     }
 

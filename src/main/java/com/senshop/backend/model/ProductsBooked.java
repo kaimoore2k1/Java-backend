@@ -1,40 +1,30 @@
 package com.senshop.backend.model;
 
 public class ProductsBooked {
-    private String name;
+    private String ID_Product;
     private String quantity;
-    private String date;
-
-    public ProductsBooked(String name, String quantity, String date) {
-        this.name = name;
+    
+    public ProductsBooked(String quantity) {
         this.quantity = quantity;
-        this.date = date;
     }
 
-    public ProductsBooked() {
-    }
+   
 
-    public String getName() {
-        return name;
+    public String getID_Product() {
+        return ID_Product;
     }
 
     public String getQuantity() {
         return quantity;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setID_Product(String iD_Product) {
+        ID_Product = iD_Product;
     }
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+   
 }
