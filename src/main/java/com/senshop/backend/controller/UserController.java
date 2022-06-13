@@ -75,7 +75,7 @@ public class UserController {
         
         if(user != null){
             if(data.getFirstName()!= null && data.getFirstName() != ""){
-                user.setFirstName();
+                user.setFirstName(data.getFirstName());
             }
             if(data.getLastName()!= null && data.getLastName()!= ""){
                 user.setLastName(data.getLastName());
@@ -115,7 +115,7 @@ public class UserController {
         
         if(user != null){
             if(data.getFirstName()!= null && data.getFirstName() != ""){
-                user.setFirstName();
+                user.setFirstName(data.getFirstName());
             }
             if(data.getLastName()!= null && data.getLastName()!= ""){
                 user.setLastName(data.getLastName());
