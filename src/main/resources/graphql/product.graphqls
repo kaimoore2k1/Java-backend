@@ -55,14 +55,11 @@ input InputImages {
 input ProductInput {
   name: String
   price: Int
-  stock: Int
   salePrice: Int
-  description: String
-  content: String
-  rating: Int
-  variant: InputVariant
-  images: [InputImages]
+  stock: Int
   categories: [String]
+  content: String
+  description: String
   slugName: String
 }
 
