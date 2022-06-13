@@ -17,6 +17,14 @@ public class Comment {
     private Float rating;
     private Date date;
 
+    public Comment(String user, ObjectId idProduct, ObjectId idBlog, String content, Float rating) {
+        this.user = user;
+        this.idProduct = idProduct;
+        this.idBlog = idBlog;
+        this.content = content;
+        this.rating = rating;
+    }
+
     public Comment(String _id, String user, ObjectId idProduct, ObjectId idBlog, String content, Float rating,
             Date date) {
         this._id = _id;

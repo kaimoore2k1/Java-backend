@@ -6,54 +6,30 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "products")
-public class Product {
+public class ProductInput {
     @Id
-    private String _id;
     private String name;
     private int price;
     private int stock;
     private int salePrice;
     private String description;
-    private int rating;
-    private Variant variant;
-    private ArrayList<Image> images;
     private ArrayList<String> categories;
     private String slugName;
     private String content;
 
-    public Product() {
+    public ProductInput() {
     }
 
-    public Product(String _id, String name, int price, int stock, int salePrice, String description, int rating,
-            Variant variant, ArrayList<Image> images, ArrayList<String> categories, String slugName, String content) {
-        this._id = _id;
+    public ProductInput(String name, int price, int stock, int salePrice, String description,
+            ArrayList<String> categories, String slugName, String content) {
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.salePrice = salePrice;
         this.description = description;
-        this.rating = rating;
-        this.variant = variant;
-        this.images = images;
         this.categories = categories;
         this.slugName = slugName;
         this.content = content;
-    }
-
-    public Product(String dataName, int dataPrice, int dataStock, int dataSalePrice, String dataDescription,
-            ArrayList<String> dataCategories, String dataSlugName, String dataContent) {
-        this.name = dataName;
-        this.price = dataPrice;
-        this.stock = dataStock;
-        this.salePrice = dataSalePrice;
-        this.description = dataDescription;
-        this.categories = dataCategories;
-        this.slugName = dataSlugName;
-        this.content = dataContent;
-    }
-
-    public String get_id() {
-        return _id;
     }
 
     public String getName() {
@@ -76,18 +52,6 @@ public class Product {
         return description;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public Variant getVariant() {
-        return variant;
-    }
-
-    public ArrayList<Image> getImages() {
-        return images;
-    }
-
     public ArrayList<String> getCategories() {
         return categories;
     }
@@ -98,10 +62,6 @@ public class Product {
 
     public String getContent() {
         return content;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
     }
 
     public void setName(String name) {
@@ -122,18 +82,6 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public void setVariant(Variant variant) {
-        this.variant = variant;
-    }
-
-    public void setImages(ArrayList<Image> images) {
-        this.images = images;
     }
 
     public void setCategories(ArrayList<String> categories) {
