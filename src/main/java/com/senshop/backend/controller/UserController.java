@@ -47,7 +47,10 @@ public class UserController {
     public List<ProductsBooked> getProductBooked(@Argument String username){
         User user = getUserByUsername(username);
         if(user !=null){
-            return user.getProductsBooked();
+            List<ProductsBooked> productBook = user.getProductsBooked();
+            for (int i = 0; i < productBook.size(); i++) {
+                
+            }
         }
         return null;
     } 

@@ -1,40 +1,36 @@
 package com.senshop.backend.model;
 
-public class ProductBill {
+public class InputBillProduct {
     private String name;
     private int quantity;
-    private double price;
+    private int price;
 
-    public ProductBill(String name, int quantity, double price) {
+    public InputBillProduct(){
+
+    }
+
+    public InputBillProduct(String name, int quantity, int price){
         this.name = name;
         this.quantity = quantity;
         this.price = price;
     }
-
-    public ProductBill() {
-    }
-
+    
     public String getName() {
         return name;
     }
-
     public int getQuantity() {
         return quantity;
     }
-
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 }
