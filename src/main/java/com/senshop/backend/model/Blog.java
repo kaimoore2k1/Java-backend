@@ -14,21 +14,23 @@ public class Blog {
     private String description;
     private String content;
     private Date date;
-    private ArrayList<String> likes;
+    private ArrayList<String> like;
     private Image image;
     private int share;
     private String author;
     private ArrayList<String> categories;
     private String slug;
 
-    public Blog(String _id, String title, String description, String content, Date date, ArrayList<String> likes,
+    public Blog() {
+    }
+    public Blog(String _id, String title, String description, String content, Date date, ArrayList<String> like,
             Image image, int share, String author, ArrayList<String> categories, String slug) {
         this._id = _id;
         this.title = title;
         this.description = description;
         this.content = content;
         this.date = date;
-        this.likes = likes;
+        this.like = like;
         this.image = image;
         this.share = share;
         this.author = author;
@@ -56,8 +58,8 @@ public class Blog {
         return date;
     }
 
-    public ArrayList<String> getLikes() {
-        return likes;
+    public ArrayList<String> getlike() {
+        return like;
     }
 
     public Image getImage() {
@@ -100,8 +102,8 @@ public class Blog {
         this.date = date;
     }
 
-    public void setLikes(ArrayList<String> likes) {
-        this.likes = likes;
+    public void setlike(ArrayList<String> like) {
+        this.like = like;
     }
 
     public void setImage(Image image) {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -44,10 +45,18 @@ public class ProductController {
 
     @QueryMapping
     public List<Product> getAllProductsByCategory(@Argument String categories) {
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("comments")
+                .localField("_id")
+                .foreignField("productId")
+                .as("comments");
+
         String[] category = { categories };
 
         Aggregation agg = Aggregation.newAggregation(Aggregation.match(Criteria.where("categories").in(category)),
-                Aggregation.lookup("comments", "_id", "productId", "comments"));
+                lookupOperation
+        // Aggregation.lookup("comments", "_id", "productId", "comments")
+        );
 
         List<Product> results = mongoTemplate.aggregate(agg, "products", Product.class).getMappedResults();
 
@@ -90,6 +99,7 @@ public class ProductController {
         Query query = new Query(Criteria.where("name").is(name));
         Product _product = mongoTemplate.findOne(query, Product.class, "products");
 
+
         String dataName = data.getName();
         int dataPrice = data.getPrice();
         int dataStock = data.getStock();
@@ -99,7 +109,7 @@ public class ProductController {
         String dataSlugName = data.getSlugName();
         String dataContent = data.getContent();
         // System.out.println("\n\n\n\n\n\n\n\n\n\n"+
-        // productRepository.findByName(name));
+        // productRepository.findByName(name));S
         Optional<Product> productOptional = Optional.ofNullable(_product);
 
         if (productOptional.isPresent()) {

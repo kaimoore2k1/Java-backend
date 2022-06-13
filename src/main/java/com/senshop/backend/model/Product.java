@@ -1,7 +1,7 @@
 package com.senshop.backend.model;
 
+import com.senshop.backend.model.Comment;
 import java.util.ArrayList;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,12 +20,22 @@ public class Product {
     private ArrayList<String> categories;
     private String slugName;
     private String content;
+    public ArrayList<Comment> comments;
+
+    public void setComments(ArrayList<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
 
     public Product() {
     }
 
     public Product(String _id, String name, int price, int stock, int salePrice, String description, int rating,
-            Variant variant, ArrayList<Image> images, ArrayList<String> categories, String slugName, String content) {
+            Variant variant, ArrayList<Image> images, ArrayList<String> categories, String slugName, String content,
+            ArrayList<Comment> comments) {
         this._id = _id;
         this.name = name;
         this.price = price;
@@ -38,6 +48,8 @@ public class Product {
         this.categories = categories;
         this.slugName = slugName;
         this.content = content;
+        this.comments = comments;
+        
     }
 
     public Product(String dataName, int dataPrice, int dataStock, int dataSalePrice, String dataDescription,

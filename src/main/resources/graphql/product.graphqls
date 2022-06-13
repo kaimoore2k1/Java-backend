@@ -68,6 +68,3 @@ type Mutation {
   deleteProductByName(name: String!): Product
 }
 
-
-
-

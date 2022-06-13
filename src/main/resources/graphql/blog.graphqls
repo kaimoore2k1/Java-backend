@@ -1,0 +1,47 @@
+type Image {
+  url: String
+}
+type Blog {
+  _id: String
+  title: String
+  date: String
+  like: [String]
+  comments: [Comment]
+  image: Image
+  share: Int
+  author: String
+  category: String
+  description: String
+  content: String
+  slug: String
+}
+
+extend type Query {
+  getAllBlogs: [Blog]
+  getHotBlogs: [Blog]
+  getBlogBySlug(slug: String!): Blog
+}
+extend type Mutation {
+  createBlog(
+    title: String
+    image: String
+    author: String
+    category: String
+    description: String
+    content: String
+    slug: String
+  ): Blog
+  updateBlog(
+    _id: String
+    title: String
+    image: String
+    author: String
+    category: String
+    description: String
+    content: String
+    slug: String
+  ): Blog
+  deleteBlog(_id: String): Blog
+  likeBlog(_id: String, user: String): Blog
+  shareBlog(_id: String): Blog
+}

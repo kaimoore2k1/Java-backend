@@ -74,13 +74,27 @@ public class UserController {
         Date date = new Date();  
         
         if(user != null){
-            user.setFirstName(data.getFirstName());;
-            user.setLastName(data.getLastName());
-            user.setCountry(data.getCountry());
-            user.setAddress(data.getAddress());
-            user.setCity(data.getCity());
-            user.setNumberPhone(data.getNumberPhone());
-            user.setEmail(data.getEmail());
+            if(data.getFirstName()!= null && data.getFirstName() != ""){
+                user.setFirstName();
+            }
+            if(data.getLastName()!= null && data.getLastName()!= ""){
+                user.setLastName(data.getLastName());
+            }
+            if(data.getCountry()!= null && data.getCountry()!= ""){
+                user.setCountry(data.getCountry());
+            }
+            if(data.getAddress() != null && data.getAddress() != ""){
+                user.setAddress(data.getAddress());
+            }
+            if(data.getCity()!= null && data.getCity() != ""){
+                user.setCity(data.getCity());
+            }
+            if(data.getNumberPhone()!= null && data.getNumberPhone() != ""){
+                user.setNumberPhone(data.getNumberPhone());
+            }
+            if(data.getEmail() != null && data.getEmail() != ""){
+                user.setEmail(data.getEmail());
+            }
             userRepository.save(user);
             System.out.println("Update user successfully");
             return user;
@@ -100,13 +114,27 @@ public class UserController {
         User user = getUserByUsername(username);
         
         if(user != null){
-            user.setFirstName(data.getFirstName());;
-            user.setLastName(data.getLastName());
-            user.setCountry(data.getCountry());
-            user.setAddress(data.getAddress());
-            user.setCity(data.getCity());
-            user.setNumberPhone(data.getNumberPhone());
-            user.setEmail(data.getEmail());
+            if(data.getFirstName()!= null && data.getFirstName() != ""){
+                user.setFirstName();
+            }
+            if(data.getLastName()!= null && data.getLastName()!= ""){
+                user.setLastName(data.getLastName());
+            }
+            if(data.getCountry()!= null && data.getCountry()!= ""){
+                user.setCountry(data.getCountry());
+            }
+            if(data.getAddress() != null && data.getAddress() != ""){
+                user.setAddress(data.getAddress());
+            }
+            if(data.getCity()!= null && data.getCity() != ""){
+                user.setCity(data.getCity());
+            }
+            if(data.getNumberPhone()!= null && data.getNumberPhone() != ""){
+                user.setNumberPhone(data.getNumberPhone());
+            }
+            if(data.getEmail() != null && data.getEmail() != ""){
+                user.setEmail(data.getEmail());
+            }
             userRepository.save(user);
             System.out.println("Update user successfully");
             return user;
