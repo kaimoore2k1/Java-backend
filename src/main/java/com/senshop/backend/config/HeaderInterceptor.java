@@ -1,4 +1,4 @@
-package com.senshop.backend.config;
+/* package com.senshop.backend.config;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,3 +22,4 @@ class HeaderInterceptor implements WebGraphQlInterceptor {
         return chain.next(request);
     }
 }
+ */

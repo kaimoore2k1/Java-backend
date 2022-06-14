@@ -54,7 +54,7 @@ public class AccountController {
         Optional<Account> user = users.stream().findFirst();
         Response res;
         if (!user.isEmpty()) {
-            res = new Response("401", "Tên đăng nhập đã tồn tại", "false", null);
+            res = new Response("401", "Tên đăng nhập đã tồn tại", "false");
             return res;
         } else {
             String encodePassword = passwordEncoder.encode(password);
