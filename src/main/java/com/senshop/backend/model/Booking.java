@@ -15,6 +15,17 @@ public class Booking {
     private String dateTime;
     private String content;
 
+    public Booking(String name, String number, String pet, String service, String time, String dateTime,
+            String content) {
+        this.name = name;
+        this.number = number;
+        this.pet = pet;
+        this.service = service;
+        this.time = time;
+        this.dateTime = dateTime;
+        this.content = content;
+    }
+
     public Booking() {
     }
 

@@ -1,8 +1,11 @@
 package com.senshop.backend.model;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,10 +18,20 @@ public class Comment {
     private ObjectId idBlog;
     private String content;
     private Float rating;
-    private Date date;
+    @CreatedDate
+    private Instant date;
+
+    public Comment(String user, ObjectId idProduct, ObjectId idBlog, String content, Float rating) {
+        this.user = user;
+        this.idProduct = idProduct;
+        this.idBlog = idBlog;
+        this.content = content;
+        this.rating = rating;
+        this.date = OffsetDateTime.now(ZoneOffset.UTC).toInstant();
+    }
 
     public Comment(String _id, String user, ObjectId idProduct, ObjectId idBlog, String content, Float rating,
-            Date date) {
+            Instant date) {
         this._id = _id;
         this.user = user;
         this.idProduct = idProduct;
@@ -55,7 +68,7 @@ public class Comment {
         return rating;
     }
 
-    public Date getDate() {
+    public Instant getDate() {
         return date;
     }
 
@@ -83,7 +96,7 @@ public class Comment {
         this.rating = rating;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 }

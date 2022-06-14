@@ -1,6 +1,7 @@
 package com.senshop.backend.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,12 +21,24 @@ public class Product {
     private ArrayList<String> categories;
     private String slugName;
     private String content;
+    public List<Comment> comments;
+    private int quantity;
+    private String ID_Product;
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
 
     public Product() {
     }
 
     public Product(String _id, String name, int price, int stock, int salePrice, String description, int rating,
-            Variant variant, ArrayList<Image> images, ArrayList<String> categories, String slugName, String content) {
+            Variant variant, ArrayList<Image> images, ArrayList<String> categories, String slugName, String content,
+            List<Comment> comments) {
         this._id = _id;
         this.name = name;
         this.price = price;
@@ -38,6 +51,20 @@ public class Product {
         this.categories = categories;
         this.slugName = slugName;
         this.content = content;
+        this.comments = comments;
+
+    }
+
+    public Product(String dataName, int dataPrice, int dataStock, int dataSalePrice, String dataDescription,
+            ArrayList<String> dataCategories, String dataSlugName, String dataContent) {
+        this.name = dataName;
+        this.price = dataPrice;
+        this.stock = dataStock;
+        this.salePrice = dataSalePrice;
+        this.description = dataDescription;
+        this.categories = dataCategories;
+        this.slugName = dataSlugName;
+        this.content = dataContent;
     }
 
     public String get_id() {
@@ -87,11 +114,25 @@ public class Product {
     public String getContent() {
         return content;
     }
+    public int getQuantity() {
+        return quantity;
+    }
+    public String getID_Product() {
+        return ID_Product;
+    }
 
     public void set_id(String _id) {
         this._id = _id;
     }
 
+
+    public void setID_Product(String iD_Product) {
+        ID_Product = iD_Product;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
     public void setName(String name) {
         this.name = name;
     }

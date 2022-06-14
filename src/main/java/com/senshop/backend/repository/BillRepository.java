@@ -6,10 +6,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.senshop.backend.model.Bill;
 import com.senshop.backend.model.User;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String>{
-    @Query("{'username': ?0}")
-    List<User> findByUsername(String username);
+public interface BillRepository extends MongoRepository<Bill, String>{
+    
 }
