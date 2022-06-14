@@ -56,6 +56,9 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
+    public User() {
+    }
+
     public String get_id() {
         return _id;
     }
