@@ -13,11 +13,13 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
+import com.senshop.backend.model.Account;
 import com.senshop.backend.model.BookedProductInput;
 import com.senshop.backend.model.Product;
 import com.senshop.backend.model.ProductsBooked;
 import com.senshop.backend.model.User;
 import com.senshop.backend.model.UserInput;
+import com.senshop.backend.repository.AccountRepository;
 import com.senshop.backend.repository.ProductRepository;
 import com.senshop.backend.repository.UserRepository;
 import com.senshop.backend.controller.ProductController;
@@ -26,10 +28,16 @@ import com.senshop.backend.controller.ProductController;
 public class UserController {
     
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @QueryMapping
     public List<User> getAllUsers() {
@@ -119,6 +127,20 @@ public class UserController {
             }
             userRepository.save(user);
             System.out.println("Update user successfully");
+
+            List<Account> accounts = accountRepository.findAll();
+            for (int i = 0; i < accounts.size(); i++) {
+                if(accounts.get(i).getUsername().compareTo(username) == 0){
+                    if(data.getEmail()!= null && data.getEmail() != ""){
+                        accounts.get(i).setEmail(data.getEmail());
+                        accountRepository.save(accounts.get(i));
+                    }
+                    break;
+                }
+            }
+
+            System.out.println("Update account successfully");
+
             return user;
         }
         else{
@@ -126,6 +148,10 @@ public class UserController {
             data.getCountry(), data.getAddress(), data.getCity(), data.getNumberPhone(), data.getEmail(), new String(formatter.format(date)), "https://senshop.tech/static/media/logo.bc588d992055212e8997a878ac242940.svg");
             userRepository.save(newUser);
             System.out.println("Create user successfully");
+
+            Account newAccount = new Account(data.getUsername(), passwordEncoder.encode(data.getPassword()), data.getEmail());
+            accountRepository.save(newAccount);
+            System.out.println("Create account successfully");
             return newUser;
         }
         
