@@ -1,0 +1,13 @@
+type Contact {
+  _id: String
+  name: String
+  mail: String
+  content: String
+}
+extend type Mutation {
+  createContact(name: String, mail: String, content: String): Contact
+  deleteContactById(_id: String): Contact
+}
+extend type Query {
+  getAllContact: [Contact]
+}

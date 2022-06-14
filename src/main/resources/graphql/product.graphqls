@@ -7,7 +7,7 @@ type Images {
   url: String
   title: String
 }
-type Comment {
+""" type Comment {
   _id: String
   user: String
   idProduct: String
@@ -16,7 +16,7 @@ type Comment {
   rating: Float
   username: String
   avatar: String
-}
+} """
 type Product {
   _id: String
   name: String
@@ -33,7 +33,6 @@ type Product {
   ratingCount: Int
   comments: [Comment]
 }
-
 type Query {
   getAllProductsByCategory(categories: String!): [Product]
   getProductByName(slugName: String!): Product

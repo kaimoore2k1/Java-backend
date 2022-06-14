@@ -1,0 +1,36 @@
+
+type Comment {
+  _id: String
+  user: String
+  idProduct: String
+  idBlog: String
+  content: String
+  rating: Float
+  username: String
+  avatar: String
+  date: String
+}
+extend type Query {
+  getCommentsByBlogID(blogID: String!): [Comment]
+  getCommentsByProductID(productID: String!): [Comment]
+  getAllComments: [Comment]
+}
+
+extend type Mutation {
+  createComment(
+    user: String
+    idProduct: String
+    idBlog: String
+    content: String!
+    rating: Float
+  ): Comment
+  updateComment(
+    _id: String!
+    idProduct: String
+    idBlog: String
+    content: String
+    user: String
+    rating: Float
+  ): Comment
+  deleteComment(_id: String!): Comment
+}
