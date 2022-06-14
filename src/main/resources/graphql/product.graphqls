@@ -32,6 +32,8 @@ type Product {
   slugName: String
   ratingCount: Int
   comments: [Comment]
+  ID_Product: String
+  quantity: Int
 }
 type Query {
   getAllProductsByCategory(categories: String!): [Product]
