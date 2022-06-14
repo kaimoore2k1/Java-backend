@@ -1,6 +1,5 @@
 package com.senshop.backend.model;
 
-import com.senshop.backend.model.Comment;
 import java.util.ArrayList;
 import java.util.List;
 
