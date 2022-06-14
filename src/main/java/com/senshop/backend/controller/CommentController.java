@@ -1,5 +1,7 @@
 package com.senshop.backend.controller;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 import org.bson.types.ObjectId;
@@ -53,7 +55,7 @@ public class CommentController {
             if (rating != null && rating > 0) {
                 updateComment.setRating(rating);
             }
-            updateComment.setDate(new Date());
+            updateComment.setDate(OffsetDateTime.now(ZoneOffset.UTC).toInstant());
             commentRepository.save(updateComment);
             return updateComment;
         }
