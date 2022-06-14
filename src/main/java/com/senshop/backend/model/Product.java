@@ -21,6 +21,8 @@ public class Product {
     private String slugName;
     private String content;
     public ArrayList<Comment> comments;
+    private int quantity;
+    private String ID_Product;
 
     public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
@@ -111,11 +113,25 @@ public class Product {
     public String getContent() {
         return content;
     }
+    public int getQuantity() {
+        return quantity;
+    }
+    public String getID_Product() {
+        return ID_Product;
+    }
 
     public void set_id(String _id) {
         this._id = _id;
     }
 
+
+    public void setID_Product(String iD_Product) {
+        ID_Product = iD_Product;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
     public void setName(String name) {
         this.name = name;
     }

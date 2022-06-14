@@ -1,6 +1,7 @@
 package com.senshop.backend.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +13,14 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
+import com.senshop.backend.model.BookedProductInput;
+import com.senshop.backend.model.Product;
 import com.senshop.backend.model.ProductsBooked;
 import com.senshop.backend.model.User;
 import com.senshop.backend.model.UserInput;
+import com.senshop.backend.repository.ProductRepository;
 import com.senshop.backend.repository.UserRepository;
+import com.senshop.backend.controller.ProductController;
 
 @Controller
 public class UserController {
@@ -23,11 +28,16 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ProductRepository productRepository;
+
     @QueryMapping
     public List<User> getAllUsers() {
         
         return userRepository.findAll();
     }
+
+
 
     @QueryMapping
     public User getUserByUsername(@Argument String username){
@@ -44,13 +54,25 @@ public class UserController {
     }
 
     @QueryMapping
-    public List<ProductsBooked> getProductBooked(@Argument String username){
+    public List<Product> getProductBooked(@Argument String username){
         User user = getUserByUsername(username);
+        List<Product> allProduct = productRepository.findAll();
+        List<Product> products = new ArrayList<Product>();
         if(user !=null){
             List<ProductsBooked> productBook = user.getProductsBooked();
+            
             for (int i = 0; i < productBook.size(); i++) {
-                
+                for (int j = 0; j < allProduct.size(); j++) {
+                    if(allProduct.get(j).get_id().compareTo(productBook.get(i).getID_Product()) == 0){
+                        allProduct.get(j).setQuantity(productBook.get(i).getQuantity());
+                        allProduct.get(j).setID_Product(productBook.get(i).getID_Product());
+                        products.add(allProduct.get(j));
+                        break;
+                    }
+                }
             }
+            System.out.println("Get booked product successfully");
+            return products;
         }
         return null;
     } 
@@ -144,4 +166,57 @@ public class UserController {
         }
     }
 
+    @MutationMapping
+    public User addProductToCart(@Argument String username, @Argument String _id){
+        User user = getUserByUsername(username);
+        if(user!= null){
+            boolean flag = false;
+            List<ProductsBooked> bookProducts = user.getProductsBooked();
+            for (int i = 0; i < bookProducts.size(); i++) {
+                if(bookProducts.get(i).getID_Product().compareTo(_id) == 0){
+                    System.out.println(true);
+                    flag = true;
+                    bookProducts.get(i).setQuantity(bookProducts.get(i).getQuantity() + 1);
+                    break;
+                }
+            }
+            user.setProductsBooked(bookProducts);
+            if(!flag){
+                user.getProductsBooked().add(new ProductsBooked(_id,1));
+                user.setProductsBooked(user.getProductsBooked());
+            }
+            System.out.println("Add product to cart successfully");
+            userRepository.save(user);
+            return user;
+        }
+        return null;
+    }
+
+    @MutationMapping
+    public User updateProductCart(@Argument String username, @Argument List<BookedProductInput> data){
+        User user = getUserByUsername(username);
+        if(user != null){
+            List<ProductsBooked> bookedProducts = new ArrayList<ProductsBooked>();
+            for (int i = 0; i < data.size(); i++) {
+                bookedProducts.add(new ProductsBooked(data.get(i).getID_Product(), data.get(i).getQuantity()));
+            }
+            user.setProductsBooked(bookedProducts);
+            userRepository.save(user);
+            
+            return user;
+        }
+        return null;
+    }
+
+    @MutationMapping
+    public User clearProductCart(@Argument String username){
+        User user = getUserByUsername(username);
+        if(user!= null){
+            List<ProductsBooked> bookProducts = new ArrayList<ProductsBooked>();
+            user.setProductsBooked(bookProducts);
+            userRepository.save(user);
+            return user;
+        }
+        return null;
+    }
 }

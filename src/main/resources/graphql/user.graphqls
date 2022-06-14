@@ -39,7 +39,7 @@ type ProductsBooked {
    extend type Query {
         getAllUsers: [User]
         getUserByUsername(username: String): User
-        getProductBooked(username: String): [BookedProduct]
+        getProductBooked(username: String): [Product]
     }
     extend type Mutation {
         createOrUpdateUser(username: String!, data: UserInput) : User,
