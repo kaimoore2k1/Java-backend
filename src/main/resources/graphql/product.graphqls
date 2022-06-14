@@ -36,6 +36,7 @@ type Product {
 type Query {
   getAllProductsByCategory(categories: String!): [Product]
   getProductByName(slugName: String!): Product
+  getRelatedProducts(categories: String!, _id: String! ): [Product]
   getAllProducts: [Product]
   getAllProductBySearch(valueSearch: String!): [Product]
   getProductById(_id: String!): Product
