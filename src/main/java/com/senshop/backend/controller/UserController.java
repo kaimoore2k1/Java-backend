@@ -51,12 +51,15 @@ public class UserController {
     public User getUserByUsername(@Argument String username){
         List<User> users =  userRepository.findAll();
         
+        
         for (int i = 0; i < users.size(); i++) {
-            
-            if(users.get(i).getUsername().compareTo(username) == 0){
-                System.out.println(users.get(i).get_id());
-                return users.get(i);
-            }    
+            if(users.get(i).getUsername() != null){
+                if(users.get(i).getUsername().compareTo(username) == 0){
+                    System.out.println(users.get(i).get_id());
+                    return users.get(i);
+                }    
+
+            }
         }
         return null;
     }
@@ -99,61 +102,104 @@ public class UserController {
 
     @MutationMapping
     public User createOrUpdateUser(@Argument String username, @Argument UserInput data){
-        User user = getUserByUsername(username);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-        Date date = new Date();  
-        
-        if(user != null){
-            if(data.getFirstName()!= null && data.getFirstName() != ""){
-                user.setFirstName(data.getFirstName());
-            }
-            if(data.getLastName()!= null && data.getLastName()!= ""){
-                user.setLastName(data.getLastName());
-            }
-            if(data.getCountry()!= null && data.getCountry()!= ""){
-                user.setCountry(data.getCountry());
-            }
-            if(data.getAddress() != null && data.getAddress() != ""){
-                user.setAddress(data.getAddress());
-            }
-            if(data.getCity()!= null && data.getCity() != ""){
-                user.setCity(data.getCity());
-            }
-            if(data.getNumberPhone()!= null && data.getNumberPhone() != ""){
-                user.setNumberPhone(data.getNumberPhone());
-            }
-            if(data.getEmail() != null && data.getEmail() != ""){
-                user.setEmail(data.getEmail());
-            }
-            userRepository.save(user);
-            System.out.println("Update user successfully");
+        if(data!= null){
 
-            List<Account> accounts = accountRepository.findAll();
-            for (int i = 0; i < accounts.size(); i++) {
-                if(accounts.get(i).getUsername().compareTo(username) == 0){
-                    if(data.getEmail()!= null && data.getEmail() != ""){
-                        accounts.get(i).setEmail(data.getEmail());
-                        accountRepository.save(accounts.get(i));
-                    }
-                    break;
+            User user = getUserByUsername(username);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+            Date date = new Date();  
+            
+            if(user != null){
+                if(data.getFirstName()!= null && data.getFirstName() != ""){
+                    user.setFirstName(data.getFirstName());
                 }
+                if(data.getLastName()!= null && data.getLastName()!= ""){
+                    user.setLastName(data.getLastName());
+                }
+                if(data.getCountry()!= null && data.getCountry()!= ""){
+                    user.setCountry(data.getCountry());
+                }
+                if(data.getAddress() != null && data.getAddress() != ""){
+                    user.setAddress(data.getAddress());
+                }
+                if(data.getCity()!= null && data.getCity() != ""){
+                    user.setCity(data.getCity());
+                }
+                if(data.getNumberPhone()!= null && data.getNumberPhone() != ""){
+                    user.setNumberPhone(data.getNumberPhone());
+                }
+                if(data.getEmail() != null && data.getEmail() != ""){
+                    user.setEmail(data.getEmail());
+                }
+                user.setDateCreate(new String(formatter.format(date)));
+                user.setAvatarUrl("https://senshop.tech/static/media/logo.bc588d992055212e8997a878ac242940.svg");
+                userRepository.save(user);
+                System.out.println("Update user successfully");
+    
+                List<Account> accounts = accountRepository.findAll();
+                for (int i = 0; i < accounts.size(); i++) {
+                    if(accounts.get(i).getUsername().compareTo(username) == 0){
+                        if(data.getEmail()!= null && data.getEmail() != ""){
+                            accounts.get(i).setEmail(data.getEmail());
+                            accountRepository.save(accounts.get(i));
+                        }
+                        break;
+                    }
+                }
+    
+                System.out.println("Update account successfully");
+    
+                return user;
             }
-
-            System.out.println("Update account successfully");
-
-            return user;
+            else{
+                User newUser = new User();
+                if(data.getUsername()!= null && data.getUsername()!= ""){
+                    newUser.setUsername(data.getUsername());
+                }
+                if(data.getFirstName()!= null && data.getFirstName() != ""){
+                    newUser.setFirstName(data.getFirstName());
+                }
+                if(data.getLastName()!= null && data.getLastName()!= ""){
+                    newUser.setLastName(data.getLastName());
+                }
+                if(data.getCountry()!= null && data.getCountry()!= ""){
+                    newUser.setCountry(data.getCountry());
+                }
+                if(data.getAddress() != null && data.getAddress() != ""){
+                    newUser.setAddress(data.getAddress());
+                }
+                if(data.getCity()!= null && data.getCity() != ""){
+                    newUser.setCity(data.getCity());
+                }
+                if(data.getNumberPhone()!= null && data.getNumberPhone() != ""){
+                    newUser.setNumberPhone(data.getNumberPhone());
+                }
+                if(data.getEmail() != null && data.getEmail() != ""){
+                    newUser.setEmail(data.getEmail());
+                }
+                newUser.setDateCreate(new String(formatter.format(date)));
+                newUser.setAvatarUrl("https://senshop.tech/static/media/logo.bc588d992055212e8997a878ac242940.svg");
+    
+                userRepository.save(newUser);
+                System.out.println("Create user successfully");
+    
+                System.out.println(data.getUsername()!= null);
+                Account newAccount = new Account();
+                if(data.getUsername() != null && data.getUsername()!= ""){
+                    newAccount.setUsername(data.getUsername());
+                }
+                if(data.getPassword() != null && data.getPassword()!= ""){
+                    newAccount.setPassword(passwordEncoder.encode(data.getPassword()));
+                }
+                if(data.getEmail()!= null && data.getEmail()!= ""){
+                    newAccount.setEmail(data.getEmail());
+                }
+                accountRepository.save(newAccount);
+                System.out.println("Create account successfully");
+                return newUser;
+            }
+            
         }
-        else{
-            User newUser = new User(data.getUsername(), data.getFirstName(), data.getLastName(),
-            data.getCountry(), data.getAddress(), data.getCity(), data.getNumberPhone(), data.getEmail(), new String(formatter.format(date)), "https://senshop.tech/static/media/logo.bc588d992055212e8997a878ac242940.svg");
-            userRepository.save(newUser);
-            System.out.println("Create user successfully");
-
-            Account newAccount = new Account(data.getUsername(), passwordEncoder.encode(data.getPassword()), data.getEmail());
-            accountRepository.save(newAccount);
-            System.out.println("Create account successfully");
-            return newUser;
-        }
+        return null;
         
     }
 

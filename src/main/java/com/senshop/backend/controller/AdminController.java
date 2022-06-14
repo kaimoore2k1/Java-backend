@@ -29,7 +29,7 @@ public class AdminController {
     }
     //admin login
     @MutationMapping
-    public Response register(@Argument String username, @Argument String password, @Argument String email) {
+    public Response adminRegister(@Argument String username, @Argument String password, @Argument String email) {
         Admin user = adminRepository.findByUsername(username);
         Response res;
         if (user.getUsername() != null) {
