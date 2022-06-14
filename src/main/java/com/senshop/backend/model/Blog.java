@@ -1,8 +1,13 @@
 package com.senshop.backend.model;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,18 +18,21 @@ public class Blog {
     private String title;
     private String description;
     private String content;
-    private Date date;
+    @CreatedDate
+    private Instant date;
     private ArrayList<String> like;
     private Image image;
     private int share;
     private String author;
-    private ArrayList<String> categories;
+    private String category;
     private String slug;
+    private List<Comment> comments;
 
     public Blog() {
     }
-    public Blog(String _id, String title, String description, String content, Date date, ArrayList<String> like,
-            Image image, int share, String author, ArrayList<String> categories, String slug) {
+
+    public Blog(String _id, String title, String description, String content, Instant date, ArrayList<String> like,
+            Image image, int share, String author, String category, String slug) {
         this._id = _id;
         this.title = title;
         this.description = description;
@@ -34,8 +42,23 @@ public class Blog {
         this.image = image;
         this.share = share;
         this.author = author;
-        this.categories = categories;
+        this.category = category;
         this.slug = slug;
+    }
+
+    public Blog(String title, String image, String author, String category, String description,
+            String content, String slug) {
+        this.title = title;
+        this.image = new Image(image);
+        this.author = author;
+        this.category = category;
+        this.description = description;
+        this.content = content;
+        this.slug = slug;
+        this.like = new ArrayList<String>();
+        this.share = 0;
+        this.date = OffsetDateTime.now(ZoneOffset.UTC).toInstant();
+
     }
 
     public String get_id() {
@@ -54,7 +77,7 @@ public class Blog {
         return content;
     }
 
-    public Date getDate() {
+    public Instant getDate() {
         return date;
     }
 
@@ -74,8 +97,8 @@ public class Blog {
         return author;
     }
 
-    public ArrayList<String> getCategories() {
-        return categories;
+    public String getCategory() {
+        return category;
     }
 
     public String getSlug() {
@@ -98,7 +121,7 @@ public class Blog {
         this.content = content;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
@@ -118,12 +141,28 @@ public class Blog {
         this.author = author;
     }
 
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public ArrayList<String> getLike() {
+        return like;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setLike(ArrayList<String> like) {
+        this.like = like;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
 }
