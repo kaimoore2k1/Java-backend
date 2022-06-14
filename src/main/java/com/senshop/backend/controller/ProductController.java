@@ -57,34 +57,31 @@ public class ProductController {
 
     @QueryMapping
     public Product getProductByName(@Argument String slugName) {
-        // String a = "Quần áo cho chó mèo AMBABY PET 2JXF164";
-        // System.out.println("slugName: " + slugName);
-        // System.out.println("productRepository: " +
-        // productRepository.findBySlugName(slugName));
-        // String pattern = "MM/dd/yyyy HH:mm:ss";
-
-        // // Create an instance of SimpleDateFormat used for formatting
-        // // the string representation of date according to the chosen pattern
-        // DateFormat df = new SimpleDateFormat(pattern);
-
-        // // Get the today date using Calendar object.
-        Date today = new Date();
-        // // Using DateFormat format method we can create a string
-        // // representation of a date with the defined format.
-        // String todayAsString = df.format(today);
-
-        // // Print the result!
-        // System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
-        // System.out.println("Today is: " + todayAsString);
-        Instant instant = today.toInstant();
-        OffsetDateTime odt = instant.atOffset(ZoneOffset.UTC);
-
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("Today is: " + odt);
 
         Product product = productRepository.findBySlugName(slugName);
         product.setComments(getCommentsByProductID(product.get_id()));
         return product;
+    }
+
+    @QueryMapping
+    public List<Product> getRelatedProducts(@Argument String categories, @Argument String _id) {
+        // get all product without comment
+
+        String[] category = { categories };
+
+        Aggregation agg = Aggregation.newAggregation(Aggregation
+                .match(Criteria.where("categories").in(category).andOperator(Criteria.where("_id").ne(_id))));
+
+        List<Product> results = mongoTemplate.aggregate(agg, "products", Product.class).getMappedResults();
+
+        // remove results one with id equal _id
+
+        results.forEach(arg0 -> {
+
+            arg0.setComments(getCommentsByProductID(arg0.get_id()));
+        });
+
+        return results;
     }
 
     @QueryMapping
