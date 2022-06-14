@@ -1,6 +1,7 @@
 package com.senshop.backend.model;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Bill {
     @Id
     private String _id;
-    private ArrayList<ProductBill> products;
+    private List<BillProduct> products;
     private String firstName;
     private String lastName;
     private String address;
@@ -19,9 +20,9 @@ public class Bill {
     private String date;
     private String paymentMethod;
 
-    public Bill(String _id, ArrayList<ProductBill> products, String firstName, String lastName, String address,
+    public Bill(List<BillProduct> products, String firstName, String lastName, String address,
             String numberPhone, int total, int amount, String date, String paymentMethod) {
-        this._id = _id;
+        
         this.products = products;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,7 +41,7 @@ public class Bill {
         this._id = _id;
     }
 
-    public void setProducts(ArrayList<ProductBill> products) {
+    public void setProducts(List<BillProduct> products) {
         this.products = products;
     }
 
@@ -80,7 +81,7 @@ public class Bill {
         return _id;
     }
 
-    public ArrayList<ProductBill> getProducts() {
+    public List<BillProduct> getProducts() {
         return products;
     }
 
