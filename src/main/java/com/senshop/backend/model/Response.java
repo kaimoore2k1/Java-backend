@@ -5,6 +5,13 @@ public class Response {
         this.status = status;
     }
 
+    public Response(String status, String message, String success, Admin adminData) {
+        this.status = status;
+        this.message = message;
+        this.success = success;
+        this.adminData = adminData;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -16,13 +23,14 @@ public class Response {
     private String status;
     private String message;
     private String success;
-    private Account data;
+    private Account accountData;
+    private Admin adminData;
 
     public Response(String status, String message, String success, Account data) {
         this.status = status;
         this.message = message;
         this.success = success;
-        this.data = data;
+        accountData = data;
     }
     public Response(String status, String message, String success) {
         this.status = status;
@@ -30,6 +38,24 @@ public class Response {
         this.success = success;
     }
     public Response() {
+    }
+
+
+
+    public Account getAccountData() {
+        return accountData;
+    }
+
+    public void setAccountData(Account accountData) {
+        this.accountData = accountData;
+    }
+
+    public Admin getAdminData() {
+        return adminData;
+    }
+
+    public void setAdminData(Admin adminData) {
+        this.adminData = adminData;
     }
 
     public String getStatus() {
@@ -42,13 +68,5 @@ public class Response {
 
     public String getSuccess() {
         return success;
-    }
-
-    public Account getData() {
-        return data;
-    }
-
-    public void setData(Account data) {
-        this.data = data;
     }
 }
