@@ -1,7 +1,13 @@
 package com.senshop.backend.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,9 +21,11 @@ import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import com.senshop.backend.model.Comment;
 import com.senshop.backend.model.Product;
 import com.senshop.backend.model.ProductInput;
 import com.senshop.backend.repository.ProductRepository;
+import com.senshop.backend.repository.CommentRepository;
 
 @Controller
 public class ProductController {
@@ -26,39 +34,83 @@ public class ProductController {
     ProductRepository productRepository;
 
     @Autowired
+    CommentRepository commentRepository;
+    @Autowired
     private MongoTemplate mongoTemplate;
+
+    public List<Comment> getCommentsByProductID(String productID) {
+        ObjectId _id = new ObjectId(productID);
+        return commentRepository.findByProductId(_id);
+    }
 
     @QueryMapping
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        // get all product without comment
+        List<Product> products = productRepository.findAll();
+
+        // set comments for each product
+        products.forEach(arg0 -> {
+            arg0.setComments(getCommentsByProductID(arg0.get_id()));
+        });
+        return products;
+
     }
 
     @QueryMapping
     public Product getProductByName(@Argument String slugName) {
         // String a = "Quần áo cho chó mèo AMBABY PET 2JXF164";
+        // System.out.println("slugName: " + slugName);
+        // System.out.println("productRepository: " +
+        // productRepository.findBySlugName(slugName));
+        // String pattern = "MM/dd/yyyy HH:mm:ss";
+
+        // // Create an instance of SimpleDateFormat used for formatting
+        // // the string representation of date according to the chosen pattern
+        // DateFormat df = new SimpleDateFormat(pattern);
+
+        // // Get the today date using Calendar object.
+        Date today = new Date();
+        // // Using DateFormat format method we can create a string
+        // // representation of a date with the defined format.
+        // String todayAsString = df.format(today);
+
+        // // Print the result!
+        // System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+        // System.out.println("Today is: " + todayAsString);
+        Instant instant = today.toInstant();
+        OffsetDateTime odt = instant.atOffset(ZoneOffset.UTC);
+
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("slugName: " + slugName);
-        System.out.println("productRepository: " +
-                productRepository.findBySlugName(slugName));
-        return productRepository.findBySlugName(slugName);
+        System.out.println("Today is: " + odt);
+
+        Product product = productRepository.findBySlugName(slugName);
+        product.setComments(getCommentsByProductID(product.get_id()));
+        return product;
     }
 
     @QueryMapping
     public List<Product> getAllProductsByCategory(@Argument String categories) {
-        LookupOperation lookupOperation = LookupOperation.newLookup()
-                .from("comments")
-                .localField("_id")
-                .foreignField("productId")
-                .as("comments");
+        // aggergate look up not working ???
+
+        // LookupOperation lookupOperation = LookupOperation.newLookup()
+        // .from("comments")
+        // .localField("_id")
+        // .foreignField("productId")
+        // .as("comments");
 
         String[] category = { categories };
 
-        Aggregation agg = Aggregation.newAggregation(Aggregation.match(Criteria.where("categories").in(category)),
-                lookupOperation
+        Aggregation agg = Aggregation.newAggregation(Aggregation.match(Criteria.where("categories").in(category))
+        // ,
+        // lookupOperation
         // Aggregation.lookup("comments", "_id", "productId", "comments")
         );
 
         List<Product> results = mongoTemplate.aggregate(agg, "products", Product.class).getMappedResults();
+
+        results.forEach(arg0 -> {
+            arg0.setComments(getCommentsByProductID(arg0.get_id()));
+        });
 
         return results;
     }
@@ -70,10 +122,16 @@ public class ProductController {
         // description: { $regex: valueSearch, $options: 'i' } }] }
         Aggregation agg = Aggregation.newAggregation(Aggregation.match(
                 Criteria.where("name").regex(valueSearch, "i")
-                        .orOperator(Criteria.where("description").regex(valueSearch, "i"))),
-                Aggregation.lookup("comments", "_id", "productId", "comments"));
+                        .orOperator(Criteria.where("description").regex(valueSearch, "i")))
+        // ,
+        // Aggregation.lookup("comments", "_id", "productId", "comments")
+        );
 
         List<Product> results = mongoTemplate.aggregate(agg, "products", Product.class).getMappedResults();
+
+        results.forEach(arg0 -> {
+            arg0.setComments(getCommentsByProductID(arg0.get_id()));
+        });
 
         return results;
     }
@@ -84,6 +142,10 @@ public class ProductController {
         Aggregation agg = Aggregation.newAggregation(Aggregation.match(Criteria.where("_id").is(_id)));
 
         List<Product> results = mongoTemplate.aggregate(agg, "products", Product.class).getMappedResults();
+
+        results.forEach(arg0 -> {
+            arg0.setComments(getCommentsByProductID(arg0.get_id()));
+        });
 
         return results;
     }
@@ -98,7 +160,6 @@ public class ProductController {
     public Product updateProductByName(@Argument String name, @Argument ProductInput data) {
         Query query = new Query(Criteria.where("name").is(name));
         Product _product = mongoTemplate.findOne(query, Product.class, "products");
-
 
         String dataName = data.getName();
         int dataPrice = data.getPrice();
