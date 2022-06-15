@@ -23,7 +23,7 @@ import com.senshop.backend.utils.JsonWebToken;
 import com.senshop.backend.model.Account;
 import com.senshop.backend.model.Admin;
 
-@PropertySource(value = {"classpath:graphql/graphql.properties"})
+@PropertySource(value = { "classpath:graphql/graphql.properties" })
 @RestController
 @SpringBootApplication
 @EnableMongoRepositories
@@ -34,42 +34,56 @@ public class Application {
 	}
 
 	@Autowired
-    HttpServletResponse response;
-
-    @Autowired
-    HttpServletRequest request;
+	HttpServletResponse response;
 
 	@Autowired
-    AccountRepository accountRepository;
+	HttpServletRequest request;
 
 	@Autowired
-    AdminRepository adminRepository;
+	AccountRepository accountRepository;
+
+	@Autowired
+	AdminRepository adminRepository;
 
 	@GetMapping("/refresh_token")
-	public void RefreshTokenRouter(@CookieValue(value = "senshop") String refreshToken) {
+	public Object RefreshTokenRouter(@CookieValue(value = "senshop") String refreshToken) {
 		JsonWebToken myJWB = new JsonWebToken();
-		if(refreshToken == null) {
+		if (refreshToken == null) {
 			response.setStatus(401);
-		}
-		else {
+			return "{\"success\":false, \"accessToken\": null}";
+		} else {
 			JWT decodedUser = JWT.decode(refreshToken);
-
 			String decodedUsername = decodedUser.getClaim("username").asString();
-			String decodedTokenVersion = decodedUser.getClaim("tokenVersion").asString();
-
+			JWT decodedTokenVersion = JWT.decode(decodedUser.getClaim("tokenVersion").asString());
+			JWT tokenVersion = JWT.decode(decodedTokenVersion.getClaim("tokenVersion").asString());
 			List<Account> users = accountRepository.findByUsername(decodedUsername);
 			Optional<Account> user = users.stream().findFirst();
-			if (user.isEmpty()) {
+			if (!user.isEmpty()) {
 				Admin admin = adminRepository.findByUsername(decodedUsername);
-				if(admin == null || admin.getTokenVersion() != decodedTokenVersion){
+				if (admin == null) {
 					response.setStatus(401);
+				} else {
+					if (admin.getTokenVersion() != tokenVersion.getClaim("tokenVersion").asString()) {
+						response.setStatus(401);
+					} else {
+						myJWB.sendRefreshToken(admin.getUsername(), admin.getTokenVersion());
+						String accessToken = myJWB.createAccessToken(admin.getUsername());
+						return "{\"success\":true, \"accessToken\":" + "\"" + accessToken + "\"" + "}";
+					}
 				}
-				myJWB.sendRefreshToken(admin.getUsername(), admin.getTokenVersion());
 			}
-			if(user.isEmpty() || user.get().getTokenVersion() != decodedTokenVersion){
+			if (user.isEmpty()) {
 				response.setStatus(401);
+			} else {
+				if (user.get().getTokenVersion() != tokenVersion.getClaim("tokenVersion").asString()) {
+					response.setStatus(401);
+				} else {
+					myJWB.sendRefreshToken(user.get().getUsername(), user.get().getTokenVersion());
+					String accessToken = myJWB.createAccessToken(user.get().getUsername());
+					return "{\"success\":true, \"accessToken\":" + "\"" + accessToken + "\"" + "}";
+				}
 			}
-			myJWB.sendRefreshToken(user.get().getUsername(), user.get().getTokenVersion());
+			return "{\"success\":false, \"accessToken\": null}";
 		}
 	}
 
